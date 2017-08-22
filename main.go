@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -40,13 +41,17 @@ func handler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) 
 			r.Body.Close()
 			return
 		}
-		if err := modifyRequest(r); err != nil {
-			log.Println("ERROR", err)
-			http.Error(w, http.StatusText(400), http.StatusBadRequest)
-			r.Body.Close()
-			return
+		log.Println(r.RequestURI)
+		if !strings.HasSuffix(r.RequestURI, "_search") {
+			if err := modifyRequest(r); err != nil {
+				log.Println("ERROR", err)
+				http.Error(w, http.StatusText(400), http.StatusBadRequest)
+				r.Body.Close()
+				return
+			}
 		}
 		p.ServeHTTP(w, r)
+
 	}
 }
 
