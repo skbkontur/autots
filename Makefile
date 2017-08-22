@@ -1,12 +1,12 @@
 VERSION := $(shell git describe --always --tags --abbrev=0 | tail -c +1)
-RELEASE := $(shell git describe --always --tags | awk -F- '{ if ($$2) dot="."} END { printf "%s\n",$$3}')
+RELEASE := $(shell git describe --always --tags | awk -F- '{ if ($$2) dot="."} END { printf "%s\n",$$2}')
 
 .PHONY: build test
 
 default: clean test build
 
 version:
-	echo ${VERSION}-${RELEASE}
+	@echo ${VERSION}-${RELEASE}
 
 test:
 	go test
