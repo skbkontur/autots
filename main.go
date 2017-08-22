@@ -42,7 +42,8 @@ func handler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) 
 			return
 		}
 		log.Println(r.RequestURI)
-		if !strings.HasSuffix(r.RequestURI, "_search") {
+		// No need to modify search requests
+		if !strings.HasSuffix(r.RequestURI, "_search") {  
 			if err := modifyRequest(r); err != nil {
 				log.Println("ERROR", err)
 				http.Error(w, http.StatusText(400), http.StatusBadRequest)
