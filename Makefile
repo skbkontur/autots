@@ -28,5 +28,3 @@ rpm:
 		--version "${VERSION}" \
 		--iteration "${RELEASE}" \
 		-p build
-
-default: build
